@@ -1,1 +1,8 @@
-21- 1,20
+
+Key Security Services (via Terraform):
+	1.	Amazon Inspector – Automated vulnerability scanning for EC2, ECR images, and Lambda.
+	2.	Amazon GuardDuty – Intelligent threat detection analyzing CloudTrail, VPC Flow Logs, DNS, S3, and EKS logs for malicious activity.
+	3.	AWS Config – Tracks all AWS resources continuously and checks compliance against rules (e.g., encryption, tagging, public S3 access).
+	4.	AWS Security Hub – Central dashboard that aggregates findings from Inspector, GuardDuty, Config, IAM Analyzer, and third-party tools; also enables compliance standards (CIS, PCI DSS, AWS Best Practices).
+
+
