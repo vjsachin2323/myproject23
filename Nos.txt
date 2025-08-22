@@ -247,4 +247,27 @@ Compliance + resource audit
 Ensure S3 is encrypted, IAM roles have MFA enabled
 
 
+Implementation Approach:
+	•	All of these services will be enabled and configured through Terraform.
+	•	Terraform modules will handle:
+	•	Enabling Security Hub, GuardDuty, Inspector, and Config across the account.
+	•	Setting up CloudTrail (multi-region) and Config delivery to S3 for audit/compliance.
+	•	EventBridge + SNS integration for critical alerts (to Slack/Email).
+	•	Hardened AMIs will be used for EC2 deployments:
+	•	Linux → CIS Benchmark hardened AMIs (from AWS Marketplace).
+	•	Windows Server 2022 → Hardened image for compliance and patch baseline.
+	•	This ensures new instances meet security baselines from Day 1.
+
+Why this is important:
+	•	Doing this via Terraform gives us repeatable, version-controlled, auditable infrastructure.
+	•	It avoids manual errors and ensures all security services are deployed consistently across environments.
+	•	Using hardened AMIs improves OS-level security posture from the start.
+	•	With a single AWS account, all services will run within the same account. If we move to a multi-account setup in the future, we can extend the same Terraform modules to configure a Dedicated Security Account for centralized findings.
+
+Next Steps:
+	•	Finalize Terraform modules for Security Hub, GuardDuty, Inspector, Config, and CloudTrail.
+	•	Test deployment in lower environment, then extend to production.
+	•	Document outputs (dashboards, alerts, compliance reports).
+
+This approach gives us a strong security foundation, continuous monitoring, and compliance readiness – all automated through Terraform.
 
