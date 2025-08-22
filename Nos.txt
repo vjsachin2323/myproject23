@@ -6,3 +6,245 @@ Key Security Services (via Terraform):
 	4.	AWS Security Hub – Central dashboard that aggregates findings from Inspector, GuardDuty, Config, IAM Analyzer, and third-party tools; also enables compliance standards (CIS, PCI DSS, AWS Best Practices).
 
 
+Amazon Inspector – Overview
+
+Amazon Inspector is AWS’s automated vulnerability management service.
+It continuously scans your EC2 instances, ECR container images, and Lambda functions to find security weaknesses like missing patches, CVE vulnerabilities, weak configurations, or outdated libraries.
+
+Think of it like a doctor check-up that runs daily on your AWS resources.
+
+⸻
+
+⚙️ How it Works (Step by Step)
+	1.	Enable Inspector (account or organization level).
+	•	AWS auto-creates a service-linked role (AWSServiceRoleForAmazonInspector2).
+	•	This gives Inspector access to EC2/ECR/Lambda metadata & scan results.
+	2.	Automatic Resource Discovery
+	•	Inspector automatically discovers all running EC2 instances, ECR repos, Lambda functions in enabled regions.
+	•	You don’t have to manually register resources.
+	3.	Continuous Scanning
+	•	For EC2: Inspector integrates with the SSM Agent on the instance to check OS + software packages.
+	•	For ECR: Each time you push an image, Inspector scans it for known CVEs (Common Vulnerabilities & Exposures).
+	•	For Lambda: Scans deployed Lambda functions & their libraries for vulnerabilities.
+	4.	Findings Generation
+	•	Vulnerabilities are listed as Findings in Inspector.
+	•	Each finding has:
+	•	Severity (Critical, High, Medium, Low)
+	•	CVE ID (if applicable)
+	•	Affected resource (instance ID, image tag, Lambda function)
+	•	Remediation guidance (e.g., patch version to upgrade to).
+	5.	Integration with Security Hub
+	•	Inspector findings automatically flow into AWS Security Hub.
+	•	From there, you can centralize, prioritize, and track compliance.
+	6.	Alerts
+	•	Findings can be sent to EventBridge → SNS → Slack/Email for real-time alerts.
+
+⸻
+
+🛡️ Why It’s Useful
+	•	Automated → no manual scanning needed.
+	•	Continuous → not one-time; scans keep running in background.
+	•	Covers multiple resources → EC2, Containers, Lambda.
+	•	Actionable → remediation steps included.
+	•	Compliance → helps meet standards (CIS, PCI, ISO).
+
+⸻
+
+📊 Example Scenario
+	•	You launch an EC2 with Ubuntu. Inspector checks OS version.
+	•	If that version has a known CVE (e.g., OpenSSL vulnerability), Inspector raises a High severity finding.
+	•	You get details: “Upgrade to Ubuntu version X.Y to patch CVE-2023-XXXX”.
+	•	Same for Docker images: If base image has a vulnerable library, Inspector tells you before deployment.
+
+⸻
+
+🚀 Best Practices
+	1.	Ensure SSM Agent is installed/running on EC2 (Inspector uses it).
+	2.	Turn on ECR Scan on Push for real-time vulnerability detection.
+	3.	Integrate findings with Security Hub for centralized monitoring.
+	4.	Use EventBridge rules to route critical findings → Slack/Email.
+	5.	Tag EC2/ECR/Lambda properly → easy filtering in Inspector/Security Hub.
+
+Amazon GuardDuty – Overview
+
+Amazon GuardDuty is AWS’s intelligent threat detection service.
+It continuously monitors your AWS logs and network activity (CloudTrail, VPC Flow Logs, DNS Logs, S3, EKS) to detect malicious or suspicious behavior.
+
+Think of it like a CCTV + Intrusion Detection System (IDS) for your AWS accounts.
+
+⸻
+
+⚙️ How it Works (Step by Step)
+	1.	Enable GuardDuty
+	•	Very simple → Just enable in your AWS account or Organization.
+	•	AWS auto-creates a service-linked role (AWSServiceRoleForAmazonGuardDuty).
+	2.	Data Sources GuardDuty Analyzes
+GuardDuty doesn’t install agents → it uses AWS data sources directly:
+	•	CloudTrail logs → API calls (who did what, from where).
+	•	VPC Flow Logs → network traffic patterns (inbound/outbound traffic).
+	•	DNS logs → which domains are queried.
+	•	S3 Data Events → detect unusual access patterns.
+	•	EKS Audit Logs → detect suspicious activity in Kubernetes.
+	3.	Threat Intelligence + ML
+	•	GuardDuty uses AWS threat intel feeds (known bad IPs, domains, malware lists).
+	•	It also uses machine learning to detect anomalies (unusual activity compared to baseline).
+	4.	Findings Generation
+	•	GuardDuty creates Findings with:
+	•	Severity (Low, Medium, High)
+	•	Resource (IAM user, EC2 instance, S3 bucket, EKS pod)
+	•	Description (e.g., “IAM key used from unusual location” or “EC2 making port scans”)
+	•	Recommended action.
+	5.	Integration with Security Hub
+	•	All GuardDuty findings flow automatically to Security Hub.
+	•	From there, you can see centralized view, compliance mapping, and aggregate alerts across accounts.
+	6.	Alerts
+	•	Findings can be routed via EventBridge → SNS → Slack/Email.
+	•	Example: If GuardDuty detects “Crypto-mining activity” on an EC2 → High severity alert goes to your Slack.
+
+⸻
+
+🛡️ Why It’s Useful
+	•	No agents needed → uses existing AWS logs.
+	•	Detects real threats, not just vulnerabilities (hack attempts, compromised keys, unusual traffic).
+	•	Covers multiple layers: IAM misuse, EC2 compromise, S3 data exfiltration, EKS/K8s abuse.
+	•	Org-wide support → can centralize findings in Delegated Security Account.
+	•	Low operational overhead → just enable, no infra setup.
+
+⸻
+
+📊 Example Scenarios GuardDuty Detects
+	1.	Compromised IAM Key
+	•	If someone steals your IAM key and uses it from Russia/China → GuardDuty alerts “IAM key used from unusual location”.
+	2.	EC2 Compromise
+	•	An EC2 starts scanning ports of other servers → GuardDuty flags it as “Reconnaissance activity”.
+	•	Or if EC2 is communicating with a known malware C&C IP → High severity alert.
+	3.	S3 Data Exfiltration
+	•	A sensitive bucket gets accessed from an unusual IP or at unusual frequency → GuardDuty raises alert.
+	4.	EKS Threats
+	•	If an attacker tries privilege escalation in Kubernetes cluster → GuardDuty raises finding.
+
+⸻
+
+🚀 Best Practices
+	1.	Enable GuardDuty in all AWS regions (attackers may target unused regions).
+	2.	For org setup, use a Delegated Security Account to centralize findings.
+	3.	Integrate with Security Hub + EventBridge → SNS/Slack for quick response.
+	4.	Automate response with Lambda (example: auto-disable compromised IAM user).
+	5.	Review GuardDuty findings regularly and patch root causes.
+
+
+AWS Security Hub
+
+🔍 Overview
+
+AWS Security Hub is the central security dashboard in AWS.
+It collects findings from services like Inspector, GuardDuty, IAM Analyzer, Config, Macie and also from third-party security tools → then gives a single pane of glass view of all security issues.
+
+Think of it like a Control Room where all CCTV feeds (Inspector, GuardDuty, Config) come together.
+
+⸻
+
+⚙️ How It Works
+	1.	Enable Security Hub in a region → AWS creates service-linked role AWSServiceRoleForSecurityHub.
+	2.	Integrates with AWS services
+	•	GuardDuty → threat detection findings
+	•	Inspector → vulnerability findings
+	•	IAM Access Analyzer → identity & permission findings
+	•	Config → compliance findings
+	•	Macie → sensitive data exposure findings
+	3.	Enable Standards (Pre-built compliance checks)
+	•	AWS Foundational Security Best Practices (AFSBP)
+	•	CIS AWS Foundations Benchmark
+	•	PCI DSS
+	•	NIST 800-53
+These run as automated controls → each resource evaluated continuously.
+	4.	Findings Aggregation
+	•	All findings normalized into AWS’s Security Finding Format (ASFF).
+	•	Findings shown with severity, resource, compliance mapping.
+	5.	Alerting
+	•	EventBridge rules trigger on High/Critical → SNS → Slack/Email.
+	6.	Org-Wide
+	•	In multi-account setup, use a Delegated Security Account → findings from all accounts flow to one place.
+
+⸻
+
+📊 Example
+	•	Inspector finds: “EC2 missing patch”.
+	•	GuardDuty finds: “IAM key used from unusual IP”.
+	•	Config finds: “S3 bucket public access ON”.
+	•	All 3 go into Security Hub. Boss/security team see one dashboard with all issues.
+
+⸻
+
+✅ Why Useful
+	•	Single Dashboard instead of jumping into 5 different services.
+	•	Compliance ready – maps findings to CIS, PCI DSS etc.
+	•	Prioritization – you see severity across all services.
+	•	Integration – works with SIEM/third-party tools also.
+
+⸻
+
+📝 AWS Config
+
+🔍 Overview
+
+AWS Config is a continuous compliance and resource inventory service.
+It records configuration of every AWS resource and checks if they meet defined rules.
+
+Think of it like an auditor writing down “what resources exist and whether they follow rules.”
+
+⸻
+
+⚙️ How It Works
+	1.	Enable Config Recorder
+	•	Records all resources (EC2, S3, IAM roles, Security Groups, etc).
+	•	Include global resources (IAM).
+	2.	Delivery Channel
+	•	Stores configuration snapshots + compliance history in an S3 bucket.
+	•	Optionally sends notifications via SNS.
+	3.	Rules
+	•	Managed Rules (predefined by AWS):
+	•	e.g., “S3 bucket should not be public”
+	•	“EBS volumes must be encrypted”
+	•	“CloudTrail must be enabled”
+	•	Custom Rules (via Lambda):
+	•	e.g., “EC2 instance must have specific tag Owner”.
+	4.	Compliance Evaluation
+	•	Each rule shows resource as Compliant/Non-Compliant.
+	5.	Integration
+	•	Config findings also flow to Security Hub.
+
+⸻
+
+📊 Example
+	•	You create a rule: “All EBS must be encrypted”.
+	•	Config scans → finds 2 unencrypted volumes → marks them as Non-Compliant.
+	•	These findings go to Security Hub for visibility.
+
+⸻
+
+✅ Why Useful
+	•	Gives complete resource inventory (who created what, when).
+	•	Ensures infra always follows baseline policies (e.g., encryption, tagging, logging).
+	•	Helps in audits & compliance (CIS, PCI, HIPAA).
+	•	Supports auto-remediation (via Systems Manager automation or Lambda).
+
+
+Service
+Focus
+Example Use
+Inspector
+Vulnerability scanning
+Missing OS patches, vulnerable Docker image
+GuardDuty
+Threat detection
+Stolen IAM key, unusual network traffic
+Security Hub
+Central dashboard + compliance mapping
+Show all issues in one place, CIS/PCI DSS compliance
+Config
+Compliance + resource audit
+Ensure S3 is encrypted, IAM roles have MFA enabled
+
+
+
