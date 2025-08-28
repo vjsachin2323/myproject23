@@ -1,0 +1,50 @@
+Service
+Input
+Why Needed
+Risk if Missing
+Redshift
+Cluster Type (Provisioned/Serverless)
+Impacts cost & performance based on workload
+Overpaying for small workloads OR underperforming for big workloads
+VPC, Subnet IDs, Security Groups
+Ensures cluster runs in private network
+Cluster may get public endpoint → security violation
+KMS Key ARN
+Required for HIPAA encryption at rest
+Non-compliance if default AWS key used
+Snapshot/Backup Policy
+Disaster Recovery & audit recovery
+Data loss, failed recovery during audit
+DataZone
+Environments (Dev/Test/Prod)
+Governance separation
+Dev/Test may access Prod data → compliance breach
+Producer/Consumer Roles
+Control who publishes/consumes data
+Anyone can share datasets → no governance
+Data Classification (PHI/PII)
+Compliance tagging for HIPAA/ISO
+PHI may not be tagged → fines/violations
+Athena
+Workgroups
+Isolate queries & enforce budgets
+Queries may overrun cost, no segregation
+Result Location (S3 + Encryption)
+Secure storage of query results
+Results stored unencrypted → compliance fail
+Data Format (Parquet/CSV)
+Impacts performance & cost
+Running on CSV = 10x more expensive
+DevOps/IaC
+S3 Buckets (names + lifecycle)
+Naming convention + retention compliance
+Duplicate/unmanaged buckets, high costs
+Secrets Manager
+Secure DB/API creds with rotation
+Hardcoded creds → major security risk
+ACM / KMS
+TLS + encryption for apps/data
+Self-signed certs, weak encryption
+CloudTrail / Config Logs
+Audit/compliance evidence (7+ yrs)
+Fail HIPAA audit → penalties
