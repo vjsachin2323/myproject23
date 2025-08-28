@@ -1,0 +1,31 @@
+Redshift
+	•	Cluster type: Provisioned or Serverless?
+	•	Node type/count (if provisioned) / RPU (if serverless)
+	•	VPC, subnet IDs, security groups
+	•	KMS Key ARN (for encryption)
+	•	Snapshot policy (frequency, retention, cross-region copy)
+	•	IAM roles for Admin/Analyst/Audit
+
+🔹 DataZone
+	•	Number of environments (Dev/Test/Prod)
+	•	Data domains (e.g., Clinical, Finance, Ops)
+	•	Primary sources (S3, Redshift)
+	•	IAM roles for Producers/Consumers
+	•	Approval workflow for dataset access
+	•	Data classification tags
+
+🔹 Athena
+	•	Workgroup names per environment
+	•	Result S3 bucket/prefix & encryption key
+	•	Glue catalog details (schemas, tables)
+	•	Data format (CSV/Parquet/ORC/Iceberg)
+	•	IAM roles & access levels
+	•	Query cost control policies
+
+🔹 DevOps/IaC Services
+	•	S3 buckets (names, lifecycle rules, encryption type)
+	•	Secrets Manager (list of secrets, rotation policy)
+	•	ACM Certificates (domains, scope)
+	•	KMS Key structure (per env/service or shared)
+	•	CloudTrail/CloudWatch (log retention, org-level or account-wise)
+	•	Mandatory tags (Owner, Project, DataClassification, CostCenter)
