@@ -1,0 +1,37 @@
+Redshift (extra)
+	•	Do we require private-only access via DX/VPN/PrivateLink?
+	•	Enable Enhanced VPC Routing?
+	•	WLM queues & concurrency targets?
+	•	Snapshot copy: target region + KMS key?
+	•	Data sharing between clusters/namespaces?
+
+Athena (extra)
+	•	Enforce workgroup-only usage?
+	•	Preferred file format (Parquet/Iceberg)?
+	•	Partition rules and who manages them?
+	•	Per-workgroup query spend limit?
+
+DataZone / Lake Formation
+	•	Exact producer/consumer roles and approval workflow?
+	•	LF permission model (db/table/column masking)?
+	•	Metadata/glossary ownership?
+
+Security/Compliance
+	•	Tagging standard (Owner, CostCenter, DataClassification).
+	•	PHI detection via Macie—scope & cadence?
+	•	Log retention per type; S3 Object Lock compliance mode on audit buckets?
+	•	Region allowlist via SCPs?
+
+Networking
+	•	Final subnet list (3 AZs), NAT strategy, DNS (Route 53).
+	•	VPC endpoints list confirmation (S3, KMS, STS, Glue, SSM, CW, Secrets).
+	•	Egress controls (no internet path?)—use centralized egress?
+
+DR/Ops
+	•	RTO/RPO targets; quarterly restore tests needed?
+	•	Pager/Teams alerting for Admin/Break-glass role assumption?
+	•	Monthly access review cadence?
+
+Cost
+	•	Non-prod scale smaller? Use Redshift Serverless for Dev/Test?
+	•	Budgets & alerts by env.
