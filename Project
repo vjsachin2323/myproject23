@@ -1,0 +1,46 @@
+•	Managed Aurora cluster failover automation and secrets with AWS Secrets Manager.
+	•	Conducted DR drills and validated application failovers across siteA and siteB.
+	•	Collaborated with cross-functional teams (architects, DBAs, developers) to meet compliance goals.
+	•	Prepared technical documentation for DR automation and knowledge transfer sessions.
+
+⸻
+
+Project 2: Cloud Infrastructure Automation & CI/CD
+
+Duration: 2019 – 2024 (Sify Technologies)
+
+Summary:
+This project involved setting up and managing cloud infrastructure on AWS for enterprise workloads, including automated deployments, monitoring, and scaling. It also focused on building CI/CD pipelines to improve release cycles and reliability of production deployments.
+
+Main Technologies:
+AWS (EC2, S3, RDS, ELB, Auto Scaling, Lambda), Terraform, Ansible, Jenkins, Docker, Kubernetes, GitHub, CloudWatch
+
+Responsibilities:
+	•	Designed and implemented Terraform modules for provisioning AWS resources.
+	•	Automated server configuration and deployments using Ansible playbooks.
+	•	Set up and managed Docker containers and orchestrated workloads with Kubernetes.
+	•	Built and maintained Jenkins CI/CD pipelines for multiple applications.
+	•	Configured CloudWatch monitoring and alarms for proactive system health checks.
+	•	Provided production support and troubleshooting to reduce downtime and improve availability.
+
+⸻
+
+Project 3: Data Center to Cloud Migration
+
+Duration: 2013 – 2019 (Factals Infotech Solution)
+
+Summary:
+This project focused on migrating legacy on-premises infrastructure to cloud platforms while ensuring system stability, security, and scalability. It involved setting up networking, Linux/Windows servers, and gradually adopting DevOps practices like automated builds and deployments.
+
+Main Technologies:
+Linux, Windows Server, VMware, AWS (EC2, S3, IAM, VPC), Shell scripting, Python, Git, Jenkins
+
+Responsibilities:
+	•	Administered and maintained Linux/Windows servers in physical and virtualized environments.
+	•	Configured network components including load balancers, firewalls, and VPNs.
+	•	Migrated workloads from on-premises to AWS, ensuring minimal downtime.
+	•	Automated routine tasks and server monitoring using Shell and Python scripts.
+	•	Implemented version control and automated builds using Git and Jenkins.
+	•	Collaborated with application teams to improve deployment efficiency and stability.
+
+
